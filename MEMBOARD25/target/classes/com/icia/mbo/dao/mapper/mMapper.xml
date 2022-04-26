@@ -4,4 +4,28 @@
 
 <mapper namespace="Member">
 
+	<!-- 회원가입 -->
+	<insert id="mJoin" parameterType="member">
+	INSERT INTO MEMBER VALUES(#{mId}, #{mPw}, #{mName}, #{mBirth, jdbcType=VARCHAR}, #{mGender, jdbcType=VARCHAR}, 
+							#{mPhone}, #{mAddr, jdbcType=VARCHAR}, #{mEmail}, #{mProfileName, jdbcType=VARCHAR})
+	</insert>
+
+	<!-- 아이디 중복체크 -->
+	<select id="idCheck" parameterType="String" resultType="String">
+		SELECT MID FROM MEMBER WHERE MID=#{mId}
+	</select>
+	
+	<!-- 회원수 검색 -->
+	<select id="mCount" resultType="int">
+	 	SELECT COUNT(*) FROM MEMBER
+	</select>
+	
+	<!-- 회원목록 -->
+	<select id="mList" parameterType="paging" resultType="member">
+		SELECT * FROM MLIST WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="mView" parameterType="String" resultType="member">
+		SELECT * FROM MEMBER WHERE MID = #{mId}
+	</select>
 </mapper>
