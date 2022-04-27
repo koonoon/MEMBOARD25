@@ -73,9 +73,9 @@ public class MService {
 		int result = mdao.mJoin(member);
 		
 		if(result>0) {
-			mav.setViewName("index");
+			mav.setViewName("M_Login");
 		} else {
-			mav.setViewName("index");
+			mav.setViewName("M_Join");
 		}
 		
 		return mav;
@@ -145,11 +145,97 @@ public class MService {
 		return mav;
 	}
 
+	// 회원정보 상세보기 메소드
 	public ModelAndView mView(String mId) {
 		MDTO member = mdao.mView(mId);
 		
 		mav.setViewName("M_View");
-		mav.addObject("mView", member);
+		mav.addObject("view", member);
+		
+		// member.getmId();
+		// = ${view.mId}
+		
+		return mav;
+	}
+
+	// 로그인
+	public ModelAndView mLogin(MDTO member) {
+		MDTO loginMember = mdao.mLogin(member);
+		
+		session.setAttribute("login", loginMember);
+		
+		// ${view.mId}
+		// = ${login.mId}
+		
+		mav.setViewName("index");
+		
+		return mav;
+	}
+
+	// 수정페이지로 이동
+	public ModelAndView mModiForm(String mId) {
+		
+		MDTO member = mdao.mView(mId);
+		
+		mav.addObject("modi", member);
+		mav.setViewName("M_Modify");
+		
+		return mav;
+	}
+
+	public ModelAndView mModify(MDTO member) throws IllegalStateException, IOException {
+				// (1)중복된 파일 이름 방지를 위한 UUID
+				UUID uuid = UUID.randomUUID();
+				
+				// (2)파일처리를 위한 업로드 파일 설정
+				MultipartFile mProfile = member.getmProfile();
+				
+				// (3)업로드 한 파일 이름 설정
+				String fileName = uuid.toString().substring(0,8) + "_" + mProfile.getOriginalFilename();
+				
+				// (4)파일업로드 경로 설정
+				String savePath = "C:/Users/user/git/MEMBOARD25/MEMBOARD25/src/main/webapp/resources/profile/" + fileName;
+				
+				// (5)업로드 한 파일이 있을 경우 실행
+				if(!mProfile.isEmpty()) {
+					mProfile.transferTo(new File(savePath));
+					member.setmProfileName(fileName);
+				}
+				
+				// 2. 주소 처리
+				String addr1 = member.getAddr1();
+				String addr2 = member.getAddr2();
+				String addr3 = member.getAddr3();
+				
+				String mAddr = "("+addr1+")"+addr2+" "+addr3;
+				
+				
+				if(addr1.equals("")) {
+					member.setmAddr(mAddr);
+				}
+				
+				
+				// 수정 여부를 확인하는 result 변수 선언
+				int result = mdao.mModify(member);
+				
+				if(result>0) {
+					mav.setViewName("redirect:/mView?mId="+member.getmId());
+				} else {
+					mav.setViewName("redirect:/mList");
+				}
+				
+				return mav;
+			}
+
+	public ModelAndView mDelete(String mId) {
+		int result = mdao.mDelete(mId);
+		
+		if(result>0) {
+			mav.setViewName("redirect:/mList");
+		} else {
+			mav.setViewName("redirect:/mView?mId="+mId);
+		}
+		
 		return mav;
 	}
 

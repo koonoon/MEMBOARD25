@@ -42,8 +42,23 @@ public class MDAO {
 
 
 	public MDTO mView(String mId) {
-		
 		return sql.selectOne("Member.mView", mId);
+	}
+
+
+	public MDTO mLogin(MDTO member) {
+		return sql.selectOne("Member.mLogin", member);
+	}
+
+
+	public int mModify(MDTO member) {
+		System.out.println("[3]수정dao : " + member);
+		return sql.update("Member.mModify", member);
+	}
+
+
+	public int mDelete(String mId) {
+		return sql.delete("Member.mDelete", mId);
 	}
 
 

@@ -82,6 +82,7 @@ public class MController {
 		return mav;
 	}
 	
+	// mView : 회원상세보기 메소드
 	@RequestMapping(value = "/mView", method = RequestMethod.GET)
 	public ModelAndView mView(@RequestParam("mId")String mId) {
 		
@@ -90,6 +91,47 @@ public class MController {
 		return mav;
 	}
 	
-	// mLogout : 로그아웃 메소드
+	// mLogin : 로그인 메소드
+	@RequestMapping(value = "/mLogin", method = RequestMethod.POST)
+	public ModelAndView mLogin(@ModelAttribute MDTO member) {
+		mav = msvc.mLogin(member);
+		return mav;
+	}
 	
+	
+	// mLogout : 로그아웃 메소드
+	@RequestMapping(value = "/mLogout", method = RequestMethod.GET)
+	public String mLogout() {
+		session.invalidate();
+		return "index";
+	}
+	
+	// mModiForm : 수정페이지로 회원정보를 가지고 이동
+	@RequestMapping(value = "/mModiForm", method = RequestMethod.GET)
+	public ModelAndView mModiForm(@RequestParam("mId")String mId) {
+		
+		mav = msvc.mModiForm(mId);
+		
+		return mav;
+	}
+	
+	// mModify : 회원수정 메소드
+	@RequestMapping(value = "/mModify", method = RequestMethod.POST)
+	public ModelAndView mModify(@ModelAttribute MDTO member) throws IllegalStateException, IOException {
+		
+		mav = msvc.mModify(member);
+		
+		return mav;
+	}
+	
+	
+	
+	// mDelete : 회원삭제 메소드
+		@RequestMapping(value = "/mDelete", method = RequestMethod.GET)
+		public ModelAndView mDelete(@RequestParam("mId")String mId) {
+			
+			mav = msvc.mDelete(mId);
+			
+			return mav;
+		}
 }

@@ -4,4 +4,32 @@
 
 <mapper namespace="Board">
 
+	<insert id="bWrite" parameterType="board">
+		INSERT INTO BOARD VALUES(BNUM_SEQ.NEXTVAL, #{bWriter}, #{bTitle}, #{bContent}, SYSDATE, 0, #{bFileName})
+	</insert>
+
+	<select id="bCount" resultType="int">
+		SELECT COUNT(*) FROM BOARD 
+	</select>
+	
+	<select id="bList" parameterType="paging" resultType="board">
+		SELECT * FROM BLIST WHERE RN BETWEEN #{startRow} AND #{endRow}
+	</select>
+	
+	<select id="bView" parameterType="int" resultType="board">
+		SELECT * FROM BOARD WHERE BNUM=#{bNum}
+	</select>
+	
+	<update id="hit" parameterType="int">
+		UPDATE BOARD SET BHIT = BHIT+1 WHERE BNUM = #{bNum} 
+	</update>
+	
+	<update id="bModify" parameterType="board">
+		UPDATE BOARD SET BWRITER = #{bWriter}, BTITLE = #{bTitle}, BCONTENT = #{bContent}, BFILENAME = #{bFileName}
+		WHERE BNUM = #{bNum}
+	</update>
+	
+	<delete id="bDelete" parameterType="int">
+		DELETE FROM BOARD WHERE BNUM=#{bNum}	
+	</delete>
 </mapper>
