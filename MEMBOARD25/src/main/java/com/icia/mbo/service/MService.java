@@ -48,7 +48,7 @@ public class MService {
 		String fileName = uuid.toString().substring(0,8) + "_" + mProfile.getOriginalFilename();
 		
 		// (4)파일업로드 경로 설정
-		String savePath = "C:/Users/user/git/MEMBOARD25/MEMBOARD25/src/main/webapp/resources/profile/" + fileName;
+		String savePath = "C:/Users/user/git/MEMBO28/MEMBO28/src/main/webapp/resources/profile/" + fileName;
 		
 		// (5)업로드 한 파일이 있을 경우 실행
 		if(!mProfile.isEmpty()) {
@@ -237,6 +237,21 @@ public class MService {
 		}
 		
 		return mav;
+	}
+
+	public String checkId(String mId) {
+		
+		String id = mdao.checkId(mId);
+		
+		String msg = null;
+		
+		if(id==null) {
+			// 사용할 수 있는 아이디
+			msg = "OK";
+		} else {
+			msg = "NO";
+		}
+		return msg;
 	}
 
 }

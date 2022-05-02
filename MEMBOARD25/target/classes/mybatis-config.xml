@@ -6,6 +6,7 @@
 	<typeAlias type="com.icia.mbo.dto.MDTO" alias="member"/>
 	<typeAlias type="com.icia.mbo.dto.BDTO" alias="board"/>
 	<typeAlias type="com.icia.mbo.dto.PDTO" alias="paging"/>
+	<typeAlias type="com.icia.mbo.dto.CDTO" alias="comm"/>
 </typeAliases>
 
 </configuration>

@@ -1,7 +1,6 @@
 package com.icia.mbo.controller;
 
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 
 import javax.servlet.http.HttpSession;
 
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.icia.mbo.dto.MDTO;
@@ -61,16 +61,17 @@ public class MController {
 	}
 	
 	// idCheck : 아이디 중복체크
-	@RequestMapping(value = "/idCheck", method = RequestMethod.GET)
-	public ModelAndView idCheck(@RequestParam(value="mId", required=true)String mId)  {
-		System.out.println("[1]jsp에서 Controller 가져온 mId 정보\n " + mId);
-	
-		mav = msvc.idCheck(mId);
-		
-		System.out.println("[4]service에서 Controller 가져온 mav 정보\n " + mav);
-		
-		return mav;
-	}
+	/*
+	 * @RequestMapping(value = "/idCheck", method = RequestMethod.GET) public
+	 * ModelAndView idCheck(@RequestParam(value="mId", required=true)String mId) {
+	 * System.out.println("[1]jsp에서 Controller 가져온 mId 정보\n " + mId);
+	 * 
+	 * mav = msvc.idCheck(mId);
+	 * 
+	 * System.out.println("[4]service에서 Controller 가져온 mav 정보\n " + mav);
+	 * 
+	 * return mav; }
+	 */
 	
 	// mList : 회원목록보기 메소드
 	@RequestMapping(value = "/mList", method = RequestMethod.GET)
@@ -134,4 +135,16 @@ public class MController {
 			
 			return mav;
 		}
+		
+	// checkId : 아이디 중복체크
+		@RequestMapping(value = "/checkId", method = RequestMethod.POST)
+		public @ResponseBody String checkId(@RequestParam("mId")String mId) {
+			
+			String msg = msvc.checkId(mId);
+			
+			return msg;
+		}
+		
+		
+	// @ResponseBody : JSON형태로 받을 때 사용
 }

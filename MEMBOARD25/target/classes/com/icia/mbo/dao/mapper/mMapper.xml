@@ -10,10 +10,10 @@
 							#{mPhone}, #{mAddr, jdbcType=VARCHAR}, #{mEmail}, #{mProfileName, jdbcType=VARCHAR})
 	</insert>
 
-	<!-- 아이디 중복체크 -->
-	<select id="idCheck" parameterType="String" resultType="String">
+	<!--  아이디 중복체크 -->
+	<!-- <select id="idCheck" parameterType="String" resultType="String">
 		SELECT MID FROM MEMBER WHERE MID=#{mId}
-	</select>
+	</select>  -->
 	
 	<!-- 회원수 검색 -->
 	<select id="mCount" resultType="int">
@@ -46,5 +46,10 @@
 	<delete id="mDelete" parameterType="String">
 		DELETE FROM MEMBER WHERE MID=#{mId}
 	</delete>
+	
+	<!-- 아이디 중복체크 -->
+	<select id="checkId" parameterType="String" resultType="String">
+		SELECT MID FROM MEMBER WHERE MID=#{mId}
+	</select>
 	
 </mapper>
