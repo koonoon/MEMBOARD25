@@ -18,4 +18,18 @@ public class CDAO {
 		
 		return sql.selectList("Comment.cList", cbNum);
 	}
+
+	public int cWrite(CDTO comm) {
+		return sql.insert("Comment.cWrite", comm);
+	}
+
+	public int cDelete(CDTO comm) {
+		
+		return sql.delete("Comment.cDelete", comm);
+	}
+
+	public int cModify(CDTO comm) {
+		
+		return sql.update("Comment.cModify", comm);
+	}
 }

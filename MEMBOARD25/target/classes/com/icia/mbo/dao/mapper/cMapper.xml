@@ -8,4 +8,19 @@
 		SELECT * FROM COMMENTS WHERE CBNUM = #{cbNum}
 	</select>
 
+	<!-- 댓글입력 -->
+	<insert id="cWrite" parameterType="comm">
+		INSERT INTO COMMENTS VALUES(COMM_SEQ.NEXTVAL, #{cbNum}, #{cWriter}, #{cContents}, SYSDATE)
+	</insert>
+	
+	<!-- 댓글 삭제 -->
+	<delete id="cDelete" parameterType="comm">
+		DELETE FROM COMMENTS WHERE CNUM = #{cNum} AND CBNUM = #{cbNum}
+	</delete>
+	
+	<!-- 댓글 수정 -->
+	<update id="cModify" parameterType="comm">
+		UPDATE COMMENTS SET CCONTENTS = #{cContents}
+		WHERE CNUM = #{cNum} AND CBNUM = #{cbNum}
+	</update>
 </mapper>
