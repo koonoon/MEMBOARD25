@@ -16,7 +16,6 @@
 </head>
 <body>
 	<h3>로그인 아이디 : ${login.mId}</h3>
-	<img src="resources/profile/${login.mProfileName}" width="200px"/>
 	<table>
 	<caption>${view.mId}님 회원정보</caption>
 	<tr>
@@ -76,7 +75,7 @@
 		<input type="button" value="수정" onclick="location.href='mModiForm?mId=${view.mId}'"/>
 		<input type="button" value="삭제" onclick="location.href='mDelete?mId=${view.mId}'"/> </td>
 	</tr>
-	</c:if>
+	</c:if> 
 	</table>
 </body>
 

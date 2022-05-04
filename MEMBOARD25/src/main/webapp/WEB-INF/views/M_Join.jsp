@@ -63,7 +63,9 @@
 	
 	<tr>
 		<th>이메일</th>
-		<td><input type="email" name="mEmail"/></td>
+		<td><input type="email" id="mEmail" name="mEmail">
+		<span id="inputUUID"><input type="button" value="인증번호 발송" onclick="checkEmail()"/></span>
+		</td>
 	</tr>
 	
 	
@@ -119,6 +121,49 @@
 			}
 		});
 		
+	}
+	
+	function checkEmail(){
+		
+		var mEmail = $('#mEmail').val();
+		
+		console.log("이메일 주소 : " + mEmail); 
+		
+		var output = "";
+		
+		var inputUUID = document.getElementById('inputUUID');
+		
+		$.ajax({
+			type : "POST",
+			url : "checkEmail",
+			data : {"mEmail" : mEmail},
+			dataType : "text",
+			success : function(uuid){
+				alert('이메일로 인증번호를 발송했습니다.');
+				console.log("인증번호 : " + uuid);
+				
+				output += "<br/>";
+				output += "<input type='texdt' id='iuuid'/>";
+				output += "<input type='hidden' id='cuuid' value='"+ uuid +"'/>";
+				output += "<input type='button' value='인증' onclick='checkUUID()'/>";
+				
+				inputUUID.innerHTML = output;
+			},
+			error : function(){
+				alert('인증번호 발송을 실패했습니다.');
+			}
+		});
+	}
+	
+	function checkUUID(){
+		var iuuid = document.getElementById('iuuid').value;
+		var cuuid = document.getElementById('cuuid').value;
+		
+		if(iuuid==cuuid){
+			alert('이메일 인증에 성공했습니다.');
+		} else{
+			alert('이메일 인증에 실패했습니다.');
+		}
 	}
 </script>  
 

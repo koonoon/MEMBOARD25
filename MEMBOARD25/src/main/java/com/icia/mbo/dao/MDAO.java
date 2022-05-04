@@ -67,4 +67,10 @@ public class MDAO {
 	}
 
 
+	public String mEpw(String mId) {
+		
+		return sql.selectOne("Member.mEpw", mId);
+	}
+
+
 }

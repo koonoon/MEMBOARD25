@@ -38,7 +38,7 @@
 	<!-- 회원수정 -->
 	<update id="mModify" parameterType="member">
 		UPDATE MEMBER SET MPW=#{mPw}, MNAME=#{mName}, MBIRTH=#{mBirth}, 
-		MGENDER=#{mGender}, MPHONE=#{mPhone}, MADDR=#{mAddr}, MEMAIL=#{mEmail}, MPROFILENAME=#{mProfileName} 
+		MGENDER=#{mGender}, MPHONE=#{mPhone}, MADDR=#{mAddr, jdbcType=VARCHAR}, MEMAIL=#{mEmail}, MPROFILENAME=#{mProfileName} 
 		WHERE MID=#{mId}
 	</update>
 	
@@ -51,5 +51,11 @@
 	<select id="checkId" parameterType="String" resultType="String">
 		SELECT MID FROM MEMBER WHERE MID=#{mId}
 	</select>
+	
+	<!-- 암호화 비밀번호 검색 -->
+	<select id="mEpw" parameterType="String" resultType="String">
+		SELECT MPW FROM MEMBER WHERE MID = #{mId}
+	</select>
+	
 	
 </mapper>

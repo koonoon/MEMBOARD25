@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,6 +8,15 @@
 <title>회원 수정 페이지</title>
 </head>
 <body>
+
+
+
+<c:if test="${login.mId ne modi.mId}">
+	<script>
+		alert('회원정보가 일치하지 않습니다.');
+		location.href="index";
+	</script>
+</c:if>
 
 <form action="mModify" method="POST" enctype="multipart/form-data">
 <table>
@@ -80,6 +90,7 @@
 	</tr>
 	
 </table>
+
 </form>
 
 </body>

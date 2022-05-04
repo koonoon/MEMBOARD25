@@ -2,14 +2,18 @@ package com.icia.mbo.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMessage.RecipientType;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,6 +35,14 @@ public class MService {
 	// 3. session 설정
 	@Autowired
 	private HttpSession session;
+	
+	// 4. security 설정
+	@Autowired
+	private BCryptPasswordEncoder pwEnc;
+	
+	// 5. 이메일 인증 설정
+	@Autowired
+	private JavaMailSender mailsender;
 	
 	
 	// 회원가입 메소드
@@ -67,6 +79,12 @@ public class MService {
 		if(addr1.equals("")) {
 			member.setmAddr(mAddr);
 		}
+		
+		// 3. 비밀번호 암호화
+		member.setmPw(pwEnc.encode(member.getmPw()));
+		// (1) 입력받은 패스워드를
+		// (2) 암호화해서 
+		// (3) MDTO(member)에 저장한다.
 		
 		
 		// 가입 여부를 확인하는 result 변수 선언
@@ -160,13 +178,15 @@ public class MService {
 
 	// 로그인
 	public ModelAndView mLogin(MDTO member) {
-		MDTO loginMember = mdao.mLogin(member);
+		// (1) 입력한 id로 암호화 된 패스워드를 검색
+		String ePw = mdao.mEpw(member.getmId());
 		
-		session.setAttribute("login", loginMember);
-		
-		// ${view.mId}
-		// = ${login.mId}
-		
+		// (2) 입력한 패스워드와 암호화 된 패스워드가 일치하는지 비교
+		if(pwEnc.matches(member.getmPw(), ePw)) {
+			MDTO loginMember = mdao.mView(member.getmId());
+			session.setAttribute("login", loginMember);
+		}
+
 		mav.setViewName("index");
 		
 		return mav;
@@ -214,6 +234,8 @@ public class MService {
 					member.setmAddr(mAddr);
 				}
 				
+				// 3. 비밀번호 암호화
+				member.setmPw(pwEnc.encode(member.getmPw()));
 				
 				// 수정 여부를 확인하는 result 변수 선언
 				int result = mdao.mModify(member);
@@ -252,6 +274,30 @@ public class MService {
 			msg = "NO";
 		}
 		return msg;
+	}
+
+	public String checkEmail(String mEmail) {
+		UUID uuid = UUID.randomUUID();
+		
+		String subuuid = uuid.toString().substring(0,8);
+		
+		MimeMessage mail = mailsender.createMimeMessage();
+		
+		String str = "<h2>안녕하세요. 인천일보 아카데미 입니다.</h2><br/>"
+					+ "<h3>인증번호는 " + subuuid + " 입니다.</h3>"
+					+ "<h3>회원가입 페이지에서 인증번호를 입력해수제요.</h3>";
+		
+		try {
+			mail.setSubject("[이메일인증] 인천일보 아카데미 이메일 인증", "utf-8");  // 이메일 제목
+			mail.setText(str, "utf-8", "html");								// 이메일 내용
+			mail.addRecipient(RecipientType.TO, new InternetAddress(mEmail));	// 받는 사람
+			
+			mailsender.send(mail);	// 이메일 전송
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		
+		return subuuid;
 	}
 
 }

@@ -36,6 +36,11 @@ public class MController {
 		return "index";
 	}
 	
+	@RequestMapping(value = "/index", method = RequestMethod.GET)
+	public String index1() {
+		return "index";
+	}
+	
 	// mJoinForm : 회원가입 페이지로 이동
 	@RequestMapping(value = "/mJoinForm", method = RequestMethod.GET)
 	public String mJoinForm() {
@@ -47,6 +52,24 @@ public class MController {
 	public String mLoginForm() {
 		return "M_Login";
 	}
+	
+	// daum1 : 지도api
+		@RequestMapping(value = "/daum1", method = RequestMethod.GET)
+		public String daum1() {
+			return "daum1";
+		}
+		
+	// daum1 : 지도api
+		@RequestMapping(value = "/daum2", method = RequestMethod.GET)
+		public String daum2() {
+		return "daum2";
+		}
+				
+	// daum1 : 지도api
+		@RequestMapping(value = "/daum3", method = RequestMethod.GET)
+		public String daum3() {
+		return "daum3";
+		}
 	
 	// mJoin : 회원가입 메소드
 	@RequestMapping(value = "/mJoin", method = RequestMethod.POST)
@@ -147,4 +170,13 @@ public class MController {
 		
 		
 	// @ResponseBody : JSON형태로 받을 때 사용
+		
+	// checkEmail : 이메일 인증 ajax
+		@RequestMapping(value = "/checkEmail", method = RequestMethod.POST)
+		public @ResponseBody String checkEmail(@RequestParam("mEmail")String mEmail) {
+			String uuid = msvc.checkEmail(mEmail);
+			
+			return uuid;
+		}
+		
 }

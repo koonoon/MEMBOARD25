@@ -7,6 +7,11 @@
 <title>회원제 게시판 index</title>
 </head>
 <body>
+	<button onclick="location.href='daum1'">다음지도API1</button>
+	<button onclick="location.href='daum2'">다음지도API2</button>
+	<button onclick="location.href='daum3'">다음지도API3</button>
+
+
 	<h3>로그인 아이디 : ${login.mId}</h3>
 	<img src="resources/profile/${login.mProfileName}" width="200px"/>
 
